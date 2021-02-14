@@ -20,31 +20,31 @@ import java.nio.file.Path;
 @Plugin(id = "testplugin", name = "testplugin", version = "1.0-SNAPSHOT")
 public class Main {
 
-    private final Path dataDirectory;
+
     private final ProxyServer server;
     private final Logger logger;
 
     private static final LegacyChannelIdentifier LEGACY_BUNGEE_CHANNEL = new LegacyChannelIdentifier("BungeeCord");
+    private static final LegacyChannelIdentifier MY_CHANNEL = new LegacyChannelIdentifier("test:channel");
     private static final MinecraftChannelIdentifier MODERN_BUNGEE_CHANNEL = MinecraftChannelIdentifier.create("bungeecord", "main");
 
     @Inject
     public Main(ProxyServer server, Logger logger, @DataDirectory Path dataDirectory) {
         this.server = server;
         this.logger = logger;
-        this.dataDirectory = dataDirectory;
-
     }
 
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
-        server.getChannelRegistrar().register(LEGACY_BUNGEE_CHANNEL, MODERN_BUNGEE_CHANNEL);
+       server.getChannelRegistrar().register(LEGACY_BUNGEE_CHANNEL, MODERN_BUNGEE_CHANNEL,MY_CHANNEL);
     }
 
     @Subscribe
     public void onPluginMessage(PluginMessageEvent event) {
-        if (!event.getIdentifier().equals(LEGACY_BUNGEE_CHANNEL) && !event.getIdentifier().equals(MODERN_BUNGEE_CHANNEL)) {
+        if (!event.getIdentifier().equals(LEGACY_BUNGEE_CHANNEL) && !event.getIdentifier().equals(MODERN_BUNGEE_CHANNEL)&& !event.getIdentifier().equals(MY_CHANNEL)) {
             return;
         }
+        logger.info("msg have been sent");
 
         event.setResult(PluginMessageEvent.ForwardResult.handled());
 
