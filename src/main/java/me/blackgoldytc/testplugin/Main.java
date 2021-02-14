@@ -44,8 +44,6 @@ public class Main {
         if (!event.getIdentifier().equals(LEGACY_BUNGEE_CHANNEL) && !event.getIdentifier().equals(MODERN_BUNGEE_CHANNEL)&& !event.getIdentifier().equals(MY_CHANNEL)) {
             return;
         }
-        logger.info("msg have been sent");
-
         event.setResult(PluginMessageEvent.ForwardResult.handled());
 
         if (!(event.getSource() instanceof ServerConnection)) {
